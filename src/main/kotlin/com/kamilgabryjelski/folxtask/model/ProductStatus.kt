@@ -1,4 +1,9 @@
 package com.kamilgabryjelski.folxtask.model
 
-enum class ProductStatus {
+import java.io.Serializable
+
+enum class ProductStatus: Serializable{
+    INSTOCK,
+    OUTOFSTOCK,
+    WITHDRAWN
 }
