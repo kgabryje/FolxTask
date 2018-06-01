@@ -1,4 +1,4 @@
-package com.kamilgabryjelski.folxtask
+package com.kamilgabryjelski.folxtask.unitTests
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.kamilgabryjelski.folxtask.constants.UriConstants
@@ -25,13 +25,13 @@ import java.util.*
 class RestControllerCreateTests {
     @MockBean
     @Autowired
-    lateinit var productRepository: ProductRepository
+    private lateinit var productRepository: ProductRepository
 
     @Autowired
-    lateinit var mockMvc: MockMvc
+    private lateinit var mockMvc: MockMvc
 
     @Autowired
-    lateinit var objectMapper: ObjectMapper
+    private lateinit var objectMapper: ObjectMapper
 
     @Test
     fun testCreateProduct() {

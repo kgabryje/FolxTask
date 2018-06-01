@@ -1,4 +1,4 @@
-package com.kamilgabryjelski.folxtask
+package com.kamilgabryjelski.folxtask.unitTests
 
 import com.kamilgabryjelski.folxtask.constants.UriConstants
 import com.kamilgabryjelski.folxtask.model.Product
@@ -26,11 +26,10 @@ class RestControllerReadTests {
 
     @MockBean
     @Autowired
-    lateinit var productRepository: ProductRepository
+    private lateinit var productRepository: ProductRepository
 
     @Autowired
-    lateinit var mockMvc: MockMvc
-
+    private lateinit var mockMvc: MockMvc
 
     @Test
     fun testReadAllProducts() {
