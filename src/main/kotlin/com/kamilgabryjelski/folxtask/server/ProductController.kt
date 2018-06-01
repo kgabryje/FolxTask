@@ -44,7 +44,7 @@ class ProductController {
 
     @Transactional
     @RequestMapping(UriConstants.UPDATE, method = [RequestMethod.POST])
-    fun updateProduct(@RequestBody product: Product): ResponseEntity<Unit> {
+    fun updateProduct(@RequestBody product: Product) {
         if (!productRepository.findById(product.id).isPresent)
             throw IDNotFound()
 
@@ -53,7 +53,6 @@ class ProductController {
         } ?: throw NameAlreadyExists()
 
         productRepository.save(product)
-        return ResponseEntity.ok().build()
     }
 
     @Transactional
