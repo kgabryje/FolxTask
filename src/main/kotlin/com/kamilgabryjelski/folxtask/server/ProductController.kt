@@ -1,5 +1,6 @@
 package com.kamilgabryjelski.folxtask.server
 
+import com.kamilgabryjelski.folxtask.constants.UriConstants
 import com.kamilgabryjelski.folxtask.exceptions.IDNotFound
 import com.kamilgabryjelski.folxtask.exceptions.NameAlreadyExists
 import com.kamilgabryjelski.folxtask.exceptions.NoSuchProduct
@@ -18,7 +19,7 @@ class ProductController {
     lateinit var productRepository: ProductRepository
 
     @Transactional
-    @RequestMapping("/createProduct", method = [RequestMethod.PUT])
+    @RequestMapping(UriConstants.CREATE, method = [RequestMethod.PUT])
     @ResponseStatus(HttpStatus.CREATED)
     fun createProduct(@RequestBody product: Product) =
         when {
@@ -28,21 +29,21 @@ class ProductController {
         }
 
     @Transactional
-    @RequestMapping("/readAll", method = [RequestMethod.GET])
+    @RequestMapping(UriConstants.READALL, method = [RequestMethod.GET])
     fun readAllProducts(): List<Product> = productRepository.findAll() as List<Product>
 
     @Transactional
-    @RequestMapping("/readByID", method = [RequestMethod.GET])
+    @RequestMapping(UriConstants.READBYID, method = [RequestMethod.GET])
     fun readProductByID(@RequestParam(value = "id") id: Long): Product =
             productRepository.findById(id).takeIf { it.isPresent }?.get() ?: throw NoSuchProduct()
 
     @Transactional
-    @RequestMapping("/readByName", method = [RequestMethod.GET])
+    @RequestMapping(UriConstants.READBYNAME, method = [RequestMethod.GET])
     fun readProductByName(@RequestParam(value = "name") name: String): Product =
             productRepository.findProductByName(name).takeIf { it.isPresent }?.get() ?: throw NoSuchProduct()
 
     @Transactional
-    @RequestMapping("/updateProduct", method = [RequestMethod.POST])
+    @RequestMapping(UriConstants.UPDATE, method = [RequestMethod.POST])
     fun updateProduct(@RequestBody product: Product): ResponseEntity<Unit> {
         if (!productRepository.findById(product.id).isPresent)
             throw IDNotFound()
@@ -56,7 +57,7 @@ class ProductController {
     }
 
     @Transactional
-    @RequestMapping("/deleteByID", method = [RequestMethod.DELETE])
+    @RequestMapping(UriConstants.DELETEBYID, method = [RequestMethod.DELETE])
     fun deleteProductByID(@RequestParam(value = "id") id: Long) =
             when {
                 !productRepository.findById(id).isPresent -> throw NoSuchProduct()
@@ -65,7 +66,7 @@ class ProductController {
 
 
     @Transactional
-    @RequestMapping("/deleteByName", method = [RequestMethod.DELETE])
+    @RequestMapping(UriConstants.DELETEBYNAME, method = [RequestMethod.DELETE])
     fun deleteProductByName(@RequestParam(value = "name") name: String) =
             when {
                 !productRepository.findProductByName(name).isPresent -> throw NoSuchProduct()
