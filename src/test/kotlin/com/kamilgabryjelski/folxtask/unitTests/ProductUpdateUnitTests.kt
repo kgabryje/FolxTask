@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.*
 
 @RunWith(SpringRunner::class)
-class ProductUpdateUnitUnitTests: ProductControllerUnitTests() {
+class ProductUpdateUnitTests: ProductControllerUnitTests() {
     @Test
     fun testUpdateProduct() {
         val id: Long = 1

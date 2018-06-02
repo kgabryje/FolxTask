@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.*
 
 @RunWith(SpringRunner::class)
-class ProductCreateUnitUnitTests: ProductControllerUnitTests() {
+class ProductCreateUnitTests: ProductControllerUnitTests() {
     @Test
     fun testCreateProduct() {
         val mockProduct = Product(1, "prod1", 123F, ProductStatus.INSTOCK)
