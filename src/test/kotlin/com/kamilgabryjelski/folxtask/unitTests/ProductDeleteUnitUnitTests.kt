@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.*
 
 @RunWith(SpringRunner::class)
-class RestControllerDeleteTests: RestControllerTests() {
+class ProductDeleteUnitUnitTests: ProductControllerUnitTests() {
     @Test
     fun testDeleteByID() {
         val id: Long = 1

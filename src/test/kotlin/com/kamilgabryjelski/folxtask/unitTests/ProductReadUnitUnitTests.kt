@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.*
 
 @RunWith(SpringRunner::class)
-class RestControllerReadTests: RestControllerTests() {
+class ProductReadUnitUnitTests: ProductControllerUnitTests() {
     @Test
     fun testReadAllProducts() {
         val mockProductList: List<Product> = listOf(

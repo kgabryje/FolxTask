@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.test.web.servlet.MockMvc
 
 @WebMvcTest(value = [(ProductController::class)], secure = false)
-open class RestControllerTests {
+abstract class ProductControllerUnitTests {
     @MockBean
     @Autowired
     protected lateinit var productRepository: ProductRepository
