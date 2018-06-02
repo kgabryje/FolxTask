@@ -6,12 +6,15 @@ import com.kamilgabryjelski.folxtask.model.Product
 import com.kamilgabryjelski.folxtask.model.ProductStatus
 import com.kamilgabryjelski.folxtask.server.ProductController
 import com.kamilgabryjelski.folxtask.server.ProductRepository
+import com.kamilgabryjelski.folxtask.server.ProductService
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.context.annotation.Bean
 import org.springframework.http.MediaType
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
@@ -21,18 +24,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.*
 
 @RunWith(SpringRunner::class)
-@WebMvcTest(value = [(ProductController::class)], secure = false)
-class RestControllerUpdateTest {
-    @MockBean
-    @Autowired
-    private lateinit var productRepository: ProductRepository
-
-    @Autowired
-    private lateinit var mockMvc: MockMvc
-
-    @Autowired
-    private lateinit var objectMapper: ObjectMapper
-
+class RestControllerUpdateTest: RestControllerTests() {
     @Test
     fun testUpdateProduct() {
         val id: Long = 1
