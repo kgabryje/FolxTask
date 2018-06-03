@@ -55,18 +55,20 @@ class ProductController {
 
     @Transactional
     @RequestMapping(UriConstants.DELETEBYID, method = [RequestMethod.DELETE])
-    fun deleteProductByID(@RequestParam(value = "id") id: Long) =
-            when {
-                !productService.findByID(id).isPresent -> throw NoSuchProduct()
-                else -> productService.deleteByID(id)
-            }
+    fun deleteProductByID(@RequestParam(value = "id") id: Long) {
+        if (!productService.findByID(id).isPresent)
+            throw NoSuchProduct()
+        else
+            productService.deleteByID(id)
+    }
 
 
     @Transactional
     @RequestMapping(UriConstants.DELETEBYNAME, method = [RequestMethod.DELETE])
-    fun deleteProductByName(@RequestParam(value = "name") name: String) =
-            when {
-                !productService.findByName(name).isPresent -> throw NoSuchProduct()
-                else -> productService.deleteByName(name)
-            }
+    fun deleteProductByName(@RequestParam(value = "name") name: String) {
+        if (!productService.findByName(name).isPresent)
+            throw NoSuchProduct()
+        else
+            productService.deleteByName(name)
+    }
 }
