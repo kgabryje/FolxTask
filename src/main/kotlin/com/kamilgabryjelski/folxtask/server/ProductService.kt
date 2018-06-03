@@ -11,7 +11,7 @@ class ProductService {
 
     fun createOrUpdate(product: Product) = productRepository.save(product)
 
-    fun findAll(): MutableIterable<Product> = productRepository.findAll()
+    fun findAll() = productRepository.findAll() as List<Product>
     fun findByID(id: Long) = productRepository.findById(id)
     fun findByName(name: String) = productRepository.findProductByName(name)
 
