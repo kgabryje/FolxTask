@@ -57,7 +57,7 @@ class ProductController {
     @RequestMapping(UriConstants.DELETEBYID, method = [RequestMethod.DELETE])
     fun deleteProductByID(@RequestParam(value = "id") id: Long) {
         if (!productService.findByID(id).isPresent)
-            throw NoSuchProduct()
+            throw IDNotFound()
         else
             productService.deleteByID(id)
     }

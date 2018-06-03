@@ -28,14 +28,14 @@ class ProductDeleteIntegrationTests: ProductIntegrationTests() {
 
     @Test
     @Transactional
-    fun testDeleteProductById_NoSuchProduct() {
+    fun testDeleteProductById_IDNotFound() {
         val id = -1L
         assertFalse(productService.findByID(id).isPresent)
 
         val builder: MockHttpServletRequestBuilder = delete(createURLWithPort("${UriConstants.DELETEBYID}?id=$id"))
         mockMvc.perform(builder)
                 .andExpect(status().isNotFound)
-                .andExpect(status().reason(HttpStatusReasonConstants.NOSUCHPRODUCT))
+                .andExpect(status().reason(HttpStatusReasonConstants.IDNOTFOUND))
     }
 
     @Test

@@ -25,13 +25,13 @@ class ProductDeleteUnitTests: ProductControllerUnitTests() {
     }
 
     @Test
-    fun testDeleteByID_NoSuchProduct() {
+    fun testDeleteByID_IDNotFound() {
         val id = anyLong()
         Mockito.`when`(productRepository.findById(id)).thenReturn(Optional.empty())
         val requestBuilder: RequestBuilder = MockMvcRequestBuilders.delete("${UriConstants.DELETEBYID}?id=$id")
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isNotFound)
-                .andExpect(status().reason(HttpStatusReasonConstants.NOSUCHPRODUCT))
+                .andExpect(status().reason(HttpStatusReasonConstants.IDNOTFOUND))
     }
 
     @Test
