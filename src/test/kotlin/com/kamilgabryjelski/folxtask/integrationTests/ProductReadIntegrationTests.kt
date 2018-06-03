@@ -36,7 +36,8 @@ class ProductReadIntegrationTests: ProductIntegrationTests() {
         val expectedOnServer = productService.findAll()[0]
         val id = expectedOnServer.id
 
-        val builder: MockHttpServletRequestBuilder = get(createURLWithPort("${UriConstants.READBYID}?id=$id"))
+        val builder: MockHttpServletRequestBuilder =
+                get(createURLWithPort(UriConstants.READBYID)).param("id", id.toString())
         val result = mockMvc.perform(builder).andExpect(status().isOk).andReturn()
 
         assertEquals(expectedOnServer, objectMapper.readValue(result.response.contentAsString, Product::class.java))
@@ -47,7 +48,8 @@ class ProductReadIntegrationTests: ProductIntegrationTests() {
     fun testReadByID_NoSuchProduct() {
         val id = -1L
 
-        val builder: MockHttpServletRequestBuilder = get(createURLWithPort("${UriConstants.READBYID}?id=$id"))
+        val builder: MockHttpServletRequestBuilder =
+                get(createURLWithPort(UriConstants.READBYID)).param("id", id.toString())
         mockMvc.perform(builder)
                 .andExpect(status().isNotFound)
                 .andExpect(status().reason(HttpStatusReasonConstants.IDNOTFOUND))
@@ -59,7 +61,8 @@ class ProductReadIntegrationTests: ProductIntegrationTests() {
         val expectedOnServer = productService.findAll()[0]
         val name = expectedOnServer.name
 
-        val builder: MockHttpServletRequestBuilder = get(createURLWithPort("${UriConstants.READBYNAME}?name=$name"))
+        val builder: MockHttpServletRequestBuilder =
+                get(createURLWithPort(UriConstants.READBYNAME)).param("name", name)
         val result = mockMvc.perform(builder).andExpect(status().isOk).andReturn()
 
         assertEquals(expectedOnServer, objectMapper.readValue(result.response.contentAsString, Product::class.java))
@@ -70,7 +73,8 @@ class ProductReadIntegrationTests: ProductIntegrationTests() {
     fun testReadByName_NoSuchProduct() {
         val name = "no_such_product"
 
-        val builder: MockHttpServletRequestBuilder = get(createURLWithPort("${UriConstants.READBYNAME}?name=$name"))
+        val builder: MockHttpServletRequestBuilder =
+                get(createURLWithPort(UriConstants.READBYNAME)).param("name", name)
         mockMvc.perform(builder)
                 .andExpect(status().isNotFound)
                 .andExpect(status().reason(HttpStatusReasonConstants.NOSUCHPRODUCT))

@@ -12,7 +12,7 @@ import org.mockito.Mockito
 import org.springframework.http.MediaType
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.RequestBuilder
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.*
 
@@ -23,7 +23,7 @@ class ProductCreateUnitTests: ProductControllerUnitTests() {
         val mockProduct = Product(1, "prod1", 123F, ProductStatus.INSTOCK)
         val mockProductJSON = objectMapper.writeValueAsString(mockProduct)
 
-        val requestBuilder: RequestBuilder = MockMvcRequestBuilders.put(UriConstants.CREATE)
+        val requestBuilder: RequestBuilder = put(UriConstants.CREATE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mockProductJSON)
         mockMvc.perform(requestBuilder).andExpect(status().isCreated)
@@ -34,7 +34,7 @@ class ProductCreateUnitTests: ProductControllerUnitTests() {
         val mockProduct = Product()
         val mockProductJSON = objectMapper.writeValueAsString(mockProduct)
 
-        val requestBuilder: RequestBuilder = MockMvcRequestBuilders.put(UriConstants.CREATE)
+        val requestBuilder: RequestBuilder = put(UriConstants.CREATE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mockProductJSON)
         mockMvc.perform(requestBuilder)
@@ -49,7 +49,7 @@ class ProductCreateUnitTests: ProductControllerUnitTests() {
         val mockProductJSON = objectMapper.writeValueAsString(mockProduct)
 
         Mockito.`when`(productRepository.findProductByName(name)).thenReturn(Optional.of(Product(name = name)))
-        val requestBuilder: RequestBuilder = MockMvcRequestBuilders.put(UriConstants.CREATE)
+        val requestBuilder: RequestBuilder = put(UriConstants.CREATE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mockProductJSON)
         mockMvc.perform(requestBuilder)
@@ -64,7 +64,7 @@ class ProductCreateUnitTests: ProductControllerUnitTests() {
         val mockProductJSON = objectMapper.writeValueAsString(mockProduct)
 
         Mockito.`when`(productRepository.findById(id)).thenReturn(Optional.of(Product(id = id)))
-        val requestBuilder: RequestBuilder = MockMvcRequestBuilders.put(UriConstants.CREATE)
+        val requestBuilder: RequestBuilder = put(UriConstants.CREATE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mockProductJSON)
         mockMvc.perform(requestBuilder)

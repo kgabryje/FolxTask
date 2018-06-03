@@ -10,7 +10,7 @@ import org.mockito.Mockito
 import org.springframework.http.MediaType
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.RequestBuilder
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.*
 
@@ -26,7 +26,7 @@ class ProductUpdateUnitTests: ProductControllerUnitTests() {
         Mockito.`when`(productRepository.findById(id)).thenReturn(productOnServer)
         Mockito.`when`(productRepository.findProductByName(name)).thenReturn(Optional.empty())
 
-        val requestBuilder: RequestBuilder = MockMvcRequestBuilders.post(UriConstants.UPDATE)
+        val requestBuilder: RequestBuilder = post(UriConstants.UPDATE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updatedProduct))
         mockMvc.perform(requestBuilder).andExpect(status().isOk)
@@ -42,7 +42,7 @@ class ProductUpdateUnitTests: ProductControllerUnitTests() {
         Mockito.`when`(productRepository.findById(id)).thenReturn(productOnServer)
         Mockito.`when`(productRepository.findProductByName(name)).thenReturn(productOnServer)
 
-        val requestBuilder: RequestBuilder = MockMvcRequestBuilders.post(UriConstants.UPDATE)
+        val requestBuilder: RequestBuilder = post(UriConstants.UPDATE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updatedProduct))
         mockMvc.perform(requestBuilder).andExpect(status().isOk)
@@ -55,7 +55,7 @@ class ProductUpdateUnitTests: ProductControllerUnitTests() {
         val updatedProduct = Product(id, name, 123F, ProductStatus.INSTOCK)
 
         Mockito.`when`(productRepository.findById(id)).thenReturn(Optional.empty())
-        val requestBuilder: RequestBuilder = MockMvcRequestBuilders.post(UriConstants.UPDATE)
+        val requestBuilder: RequestBuilder = post(UriConstants.UPDATE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updatedProduct))
         mockMvc.perform(requestBuilder)
@@ -73,7 +73,7 @@ class ProductUpdateUnitTests: ProductControllerUnitTests() {
         Mockito.`when`(productRepository.findById(id)).thenReturn(productOnServer)
         Mockito.`when`(productRepository.findProductByName(name)).thenReturn(Optional.of(Product(id+1, name)))
 
-        val requestBuilder: RequestBuilder = MockMvcRequestBuilders.post(UriConstants.UPDATE)
+        val requestBuilder: RequestBuilder = post(UriConstants.UPDATE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updatedProduct))
         mockMvc.perform(requestBuilder)

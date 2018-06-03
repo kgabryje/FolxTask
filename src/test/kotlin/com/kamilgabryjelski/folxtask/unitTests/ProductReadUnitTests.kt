@@ -13,7 +13,7 @@ import org.mockito.Mockito
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MvcResult
 import org.springframework.test.web.servlet.RequestBuilder
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.*
 
@@ -28,7 +28,7 @@ class ProductReadUnitTests: ProductControllerUnitTests() {
                 )
         Mockito.`when`(productRepository.findAll()).thenReturn(mockProductList)
 
-        val requestBuilder: RequestBuilder = MockMvcRequestBuilders.get(UriConstants.READALL)
+        val requestBuilder: RequestBuilder = get(UriConstants.READALL)
         val result: MvcResult = mockMvc.perform(requestBuilder).andExpect(status().isOk).andReturn()
 
         val returnedMockProductList: List<Product> = objectMapper.readValue(
@@ -43,7 +43,7 @@ class ProductReadUnitTests: ProductControllerUnitTests() {
         val mockProductList: List<Product> = emptyList()
         Mockito.`when`(productRepository.findAll()).thenReturn(mockProductList)
 
-        val requestBuilder: RequestBuilder = MockMvcRequestBuilders.get(UriConstants.READALL)
+        val requestBuilder: RequestBuilder = get(UriConstants.READALL)
         val result: MvcResult = mockMvc.perform(requestBuilder).andExpect(status().isOk).andReturn()
 
         val resultList = objectMapper.readValue(result.response.contentAsString, List::class.java)
@@ -56,7 +56,7 @@ class ProductReadUnitTests: ProductControllerUnitTests() {
         val mockProduct: Optional<Product> = Optional.of(Product(id, "prod", 123F, ProductStatus.INSTOCK))
         Mockito.`when`(productRepository.findById(id)).thenReturn(mockProduct)
 
-        val requestBuilder: RequestBuilder = MockMvcRequestBuilders.get("${UriConstants.READBYID}?id=$id")
+        val requestBuilder: RequestBuilder = get(UriConstants.READBYID).param("id", id.toString())
         val result: MvcResult = mockMvc.perform(requestBuilder).andExpect(status().isOk).andReturn()
 
         val returnProduct: Product = objectMapper.readValue(result.response.contentAsString, Product::class.java)
@@ -68,7 +68,7 @@ class ProductReadUnitTests: ProductControllerUnitTests() {
         val id = anyLong()
         Mockito.`when`(productRepository.findById(id)).thenReturn(Optional.empty())
 
-        val requestBuilder: RequestBuilder = MockMvcRequestBuilders.get("${UriConstants.READBYID}?id=$id")
+        val requestBuilder: RequestBuilder = get(UriConstants.READBYID).param("id", id.toString())
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isNotFound)
                 .andExpect(status().reason(HttpStatusReasonConstants.IDNOTFOUND))
@@ -80,7 +80,7 @@ class ProductReadUnitTests: ProductControllerUnitTests() {
         val mockProduct: Optional<Product> = Optional.of(Product(1L, name, 123F, ProductStatus.INSTOCK))
         Mockito.`when`(productRepository.findProductByName(name)).thenReturn(mockProduct)
 
-        val requestBuilder: RequestBuilder = MockMvcRequestBuilders.get("${UriConstants.READBYNAME}?name=$name")
+        val requestBuilder: RequestBuilder = get(UriConstants.READBYNAME).param("name", name)
         val result: MvcResult = mockMvc.perform(requestBuilder).andExpect(status().isOk).andReturn()
 
         val returnProduct: Product = objectMapper.readValue(result.response.contentAsString, Product::class.java)
@@ -92,7 +92,7 @@ class ProductReadUnitTests: ProductControllerUnitTests() {
         val name = anyString()
         Mockito.`when`(productRepository.findProductByName(name)).thenReturn(Optional.empty())
 
-        val requestBuilder: RequestBuilder = MockMvcRequestBuilders.get("${UriConstants.READBYNAME}?name=$name")
+        val requestBuilder: RequestBuilder = get(UriConstants.READBYNAME).param("name", name)
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isNotFound)
                 .andExpect(status().reason(HttpStatusReasonConstants.NOSUCHPRODUCT))

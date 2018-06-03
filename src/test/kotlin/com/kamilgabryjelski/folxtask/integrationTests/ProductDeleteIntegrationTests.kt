@@ -3,10 +3,8 @@ package com.kamilgabryjelski.folxtask.integrationTests
 import com.kamilgabryjelski.folxtask.constants.HttpStatusReasonConstants
 import com.kamilgabryjelski.folxtask.constants.UriConstants
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers.anyLong
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
@@ -20,7 +18,8 @@ class ProductDeleteIntegrationTests: ProductIntegrationTests() {
     fun testDeleteProductById() {
         val id = productService.findAll()[0].id
 
-        val builder: MockHttpServletRequestBuilder = delete(createURLWithPort("${UriConstants.DELETEBYID}?id=$id"))
+        val builder: MockHttpServletRequestBuilder =
+                delete(createURLWithPort(UriConstants.DELETEBYID)).param("id", id.toString())
         mockMvc.perform(builder).andExpect(status().isOk)
 
         assertFalse(productService.findByID(id).isPresent)
@@ -32,7 +31,8 @@ class ProductDeleteIntegrationTests: ProductIntegrationTests() {
         val id = -1L
         assertFalse(productService.findByID(id).isPresent)
 
-        val builder: MockHttpServletRequestBuilder = delete(createURLWithPort("${UriConstants.DELETEBYID}?id=$id"))
+        val builder: MockHttpServletRequestBuilder =
+                delete(createURLWithPort(UriConstants.DELETEBYID)).param("id", id.toString())
         mockMvc.perform(builder)
                 .andExpect(status().isNotFound)
                 .andExpect(status().reason(HttpStatusReasonConstants.IDNOTFOUND))
@@ -43,7 +43,8 @@ class ProductDeleteIntegrationTests: ProductIntegrationTests() {
     fun testDeleteProductByName() {
         val name = productService.findAll()[0].name
 
-        val builder: MockHttpServletRequestBuilder = delete(createURLWithPort("${UriConstants.DELETEBYNAME}?name=$name"))
+        val builder: MockHttpServletRequestBuilder =
+                delete(createURLWithPort(UriConstants.DELETEBYNAME)).param("name", name)
         mockMvc.perform(builder).andExpect(status().isOk)
 
         assertFalse(productService.findByName(name).isPresent)
@@ -55,7 +56,8 @@ class ProductDeleteIntegrationTests: ProductIntegrationTests() {
         val name = "no_such_product"
         assertFalse(productService.findByName(name).isPresent)
 
-        val builder: MockHttpServletRequestBuilder = delete(createURLWithPort("${UriConstants.DELETEBYNAME}?name=$name"))
+        val builder: MockHttpServletRequestBuilder =
+                delete(createURLWithPort("${UriConstants.DELETEBYNAME}?name=$name")).param("name", name)
         mockMvc.perform(builder)
                 .andExpect(status().isNotFound)
                 .andExpect(status().reason(HttpStatusReasonConstants.NOSUCHPRODUCT))

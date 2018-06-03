@@ -10,7 +10,7 @@ import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.RequestBuilder
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.*
 
@@ -20,7 +20,7 @@ class ProductDeleteUnitTests: ProductControllerUnitTests() {
     fun testDeleteByID() {
         val id = anyLong()
         Mockito.`when`(productRepository.findById(id)).thenReturn(Optional.of(Product(id)))
-        val requestBuilder: RequestBuilder = MockMvcRequestBuilders.delete("${UriConstants.DELETEBYID}?id=$id")
+        val requestBuilder: RequestBuilder = delete(UriConstants.DELETEBYID).param("id", id.toString())
         mockMvc.perform(requestBuilder).andExpect(status().isOk)
     }
 
@@ -28,7 +28,7 @@ class ProductDeleteUnitTests: ProductControllerUnitTests() {
     fun testDeleteByID_IDNotFound() {
         val id = anyLong()
         Mockito.`when`(productRepository.findById(id)).thenReturn(Optional.empty())
-        val requestBuilder: RequestBuilder = MockMvcRequestBuilders.delete("${UriConstants.DELETEBYID}?id=$id")
+        val requestBuilder: RequestBuilder = delete(UriConstants.DELETEBYID).param("id", id.toString())
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isNotFound)
                 .andExpect(status().reason(HttpStatusReasonConstants.IDNOTFOUND))
@@ -38,7 +38,7 @@ class ProductDeleteUnitTests: ProductControllerUnitTests() {
     fun testDeleteByName() {
         val name = anyString()
         Mockito.`when`(productRepository.findProductByName(name)).thenReturn(Optional.of(Product(name = name)))
-        val requestBuilder: RequestBuilder = MockMvcRequestBuilders.delete("${UriConstants.DELETEBYNAME}?name=$name")
+        val requestBuilder: RequestBuilder = delete(UriConstants.DELETEBYNAME).param("name", name)
         mockMvc.perform(requestBuilder).andExpect(status().isOk)
     }
 
@@ -46,7 +46,7 @@ class ProductDeleteUnitTests: ProductControllerUnitTests() {
     fun deleteByName_NoSuchProduct() {
         val name = anyString()
         Mockito.`when`(productRepository.findProductByName(name)).thenReturn(Optional.empty())
-        val requestBuilder: RequestBuilder = MockMvcRequestBuilders.delete("${UriConstants.DELETEBYNAME}?name=$name")
+        val requestBuilder: RequestBuilder = delete(UriConstants.DELETEBYNAME).param("name", name)
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isNotFound)
                 .andExpect(status().reason(HttpStatusReasonConstants.NOSUCHPRODUCT))
