@@ -68,7 +68,7 @@ class ProductCreateUnitTests: ProductControllerUnitTests() {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mockProductJSON)
         mockMvc.perform(requestBuilder)
-                .andExpect(status().isConflict)
+                .andExpect(status().isBadRequest)
                 .andExpect(status().reason(HttpStatusReasonConstants.IDEXISTS))
     }
 }

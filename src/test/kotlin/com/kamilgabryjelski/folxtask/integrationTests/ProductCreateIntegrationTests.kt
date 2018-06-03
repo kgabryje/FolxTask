@@ -70,7 +70,7 @@ class ProductCreateIntegrationTests: ProductIntegrationTests() {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(product))
         mockMvc.perform(builder)
-                .andExpect(status().isConflict)
+                .andExpect(status().isBadRequest)
                 .andExpect(status().reason(HttpStatusReasonConstants.IDEXISTS))
     }
 }
