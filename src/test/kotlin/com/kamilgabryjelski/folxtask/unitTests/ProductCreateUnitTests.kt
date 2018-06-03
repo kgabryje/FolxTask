@@ -1,10 +1,13 @@
 package com.kamilgabryjelski.folxtask.unitTests
 
+import com.kamilgabryjelski.folxtask.constants.HttpStatusReasonConstants
 import com.kamilgabryjelski.folxtask.constants.UriConstants
 import com.kamilgabryjelski.folxtask.model.Product
 import com.kamilgabryjelski.folxtask.model.ProductStatus
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers.anyLong
+import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito
 import org.springframework.http.MediaType
 import org.springframework.test.context.junit4.SpringRunner
@@ -34,12 +37,14 @@ class ProductCreateUnitTests: ProductControllerUnitTests() {
         val requestBuilder: RequestBuilder = MockMvcRequestBuilders.put(UriConstants.CREATE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mockProductJSON)
-        mockMvc.perform(requestBuilder).andExpect(status().isBadRequest)
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().isBadRequest)
+                .andExpect(status().reason(HttpStatusReasonConstants.WITHDRAWN))
     }
 
     @Test
     fun testCreateProduct_NameExists() {
-        val name = "prod"
+        val name = anyString()
         val mockProduct = Product(name = name, status = ProductStatus.OUTOFSTOCK)
         val mockProductJSON = objectMapper.writeValueAsString(mockProduct)
 
@@ -47,6 +52,23 @@ class ProductCreateUnitTests: ProductControllerUnitTests() {
         val requestBuilder: RequestBuilder = MockMvcRequestBuilders.put(UriConstants.CREATE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mockProductJSON)
-        mockMvc.perform(requestBuilder).andExpect(status().isConflict)
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().isConflict)
+                .andExpect(status().reason(HttpStatusReasonConstants.NAMEEXISTS))
+    }
+
+    @Test
+    fun testCreateProduct_IDExists() {
+        val id = anyLong()
+        val mockProduct = Product(id = id, status = ProductStatus.INSTOCK)
+        val mockProductJSON = objectMapper.writeValueAsString(mockProduct)
+
+        Mockito.`when`(productRepository.findById(id)).thenReturn(Optional.of(Product(id = id)))
+        val requestBuilder: RequestBuilder = MockMvcRequestBuilders.put(UriConstants.CREATE)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mockProductJSON)
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().isConflict)
+                .andExpect(status().reason(HttpStatusReasonConstants.IDEXISTS))
     }
 }

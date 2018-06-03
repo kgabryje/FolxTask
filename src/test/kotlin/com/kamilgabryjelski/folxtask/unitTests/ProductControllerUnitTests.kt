@@ -1,17 +1,16 @@
 package com.kamilgabryjelski.folxtask.unitTests
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.kamilgabryjelski.folxtask.server.ProductController
 import com.kamilgabryjelski.folxtask.server.ProductRepository
 import com.kamilgabryjelski.folxtask.server.ProductService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.context.annotation.Bean
 import org.springframework.test.web.servlet.MockMvc
 
-@WebMvcTest(value = [(ProductController::class)], secure = false)
+@SpringBootTest
+@AutoConfigureMockMvc
 abstract class ProductControllerUnitTests {
     @MockBean
     @Autowired
@@ -25,12 +24,4 @@ abstract class ProductControllerUnitTests {
 
     @Autowired
     protected lateinit var objectMapper: ObjectMapper
-
-    @TestConfiguration
-    class ProductServiceConfig {
-        @Bean
-        fun productService(): ProductService {
-            return ProductService()
-        }
-    }
 }

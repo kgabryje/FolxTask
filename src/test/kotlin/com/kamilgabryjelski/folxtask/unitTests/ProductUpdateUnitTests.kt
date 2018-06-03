@@ -1,5 +1,6 @@
 package com.kamilgabryjelski.folxtask.unitTests
 
+import com.kamilgabryjelski.folxtask.constants.HttpStatusReasonConstants
 import com.kamilgabryjelski.folxtask.constants.UriConstants
 import com.kamilgabryjelski.folxtask.model.Product
 import com.kamilgabryjelski.folxtask.model.ProductStatus
@@ -57,7 +58,9 @@ class ProductUpdateUnitTests: ProductControllerUnitTests() {
         val requestBuilder: RequestBuilder = MockMvcRequestBuilders.post(UriConstants.UPDATE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updatedProduct))
-        mockMvc.perform(requestBuilder).andExpect(status().isNotFound)
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().isNotFound)
+                .andExpect(status().reason(HttpStatusReasonConstants.IDNOTFOUND))
     }
 
     @Test
@@ -73,6 +76,8 @@ class ProductUpdateUnitTests: ProductControllerUnitTests() {
         val requestBuilder: RequestBuilder = MockMvcRequestBuilders.post(UriConstants.UPDATE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updatedProduct))
-        mockMvc.perform(requestBuilder).andExpect(status().isConflict)
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().isConflict)
+                .andExpect(status().reason(HttpStatusReasonConstants.NAMEEXISTS))
     }
 }
