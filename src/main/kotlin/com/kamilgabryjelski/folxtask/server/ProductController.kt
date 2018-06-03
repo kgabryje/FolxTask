@@ -1,10 +1,7 @@
 package com.kamilgabryjelski.folxtask.server
 
 import com.kamilgabryjelski.folxtask.constants.UriConstants
-import com.kamilgabryjelski.folxtask.exceptions.IDNotFound
-import com.kamilgabryjelski.folxtask.exceptions.NameAlreadyExists
-import com.kamilgabryjelski.folxtask.exceptions.NoSuchProduct
-import com.kamilgabryjelski.folxtask.exceptions.WithdrawnProductNotAllowed
+import com.kamilgabryjelski.folxtask.exceptions.*
 import com.kamilgabryjelski.folxtask.model.Product
 import com.kamilgabryjelski.folxtask.model.ProductStatus
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,12 +17,14 @@ class ProductController {
     @Transactional
     @RequestMapping(UriConstants.CREATE, method = [RequestMethod.PUT])
     @ResponseStatus(HttpStatus.CREATED)
-    fun createProduct(@RequestBody product: Product) =
+    fun createProduct(@RequestBody product: Product) {
         when {
             product.status == ProductStatus.WITHDRAWN -> throw WithdrawnProductNotAllowed()
+            productService.findByID(product.id).isPresent -> throw IDAlreadyExists()
             productService.findByName(product.name).isPresent -> throw NameAlreadyExists()
             else -> productService.createOrUpdate(product)
         }
+    }
 
     @Transactional
     @RequestMapping(UriConstants.READALL, method = [RequestMethod.GET])
