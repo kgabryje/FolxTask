@@ -33,7 +33,7 @@ class ProductController {
     @Transactional
     @RequestMapping(UriConstants.READBYID, method = [RequestMethod.GET])
     fun readProductByID(@RequestParam(value = "id") id: Long): Product =
-            productService.findByID(id).takeIf { it.isPresent }?.get() ?: throw NoSuchProduct()
+            productService.findByID(id).takeIf { it.isPresent }?.get() ?: throw IDNotFound()
 
     @Transactional
     @RequestMapping(UriConstants.READBYNAME, method = [RequestMethod.GET])
