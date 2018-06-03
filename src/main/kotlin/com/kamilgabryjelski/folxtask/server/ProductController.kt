@@ -28,7 +28,7 @@ class ProductController {
 
     @Transactional
     @RequestMapping(UriConstants.READALL, method = [RequestMethod.GET])
-    fun readAllProducts(): List<Product> = productService.findAll() as List<Product>
+    fun readAllProducts(): List<Product> = productService.findAll()
 
     @Transactional
     @RequestMapping(UriConstants.READBYID, method = [RequestMethod.GET])
